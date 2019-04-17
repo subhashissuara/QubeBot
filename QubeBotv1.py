@@ -5,9 +5,9 @@ import time
 driver = webdriver.Chrome()
 driver.get('https://web.whatsapp.com/')
 
-
+input('Press any letter and press Enter after scanning QR Code...')
 #target = " " #Type your target's name here which is same as the contact name stored in your phone.
-target = input("Type your target's name here which is same as the contact name stored in your phone:")
+target = input("Type your target's name which is same as the contact name stored in your phone:")
 
 
 # Replies to messages
@@ -21,8 +21,6 @@ msg_to_hi7 = "1. Make sure there is no gap between . and your command otherwise,
 msg_to_hi8 = "2. The commands are not case sensitive :)"
 msg_to_whatismyname = ("It's " + target + ". How come did you forget your name huh?")
 msg_to_bye = "It was nice meeting you! See ya!"
-
-input('Press any letter and press Enter after scanning QR Code...')
 
 TargetXML = driver.find_element_by_xpath('//span[@title = "{}"]'.format(target))
 TargetXML.click()
