@@ -10,7 +10,6 @@ import sys
 #target = " " #Type your target's name here which is same as the contact name stored in your phone.
 target = input("Type your target's name which is same as the contact name stored in your phone(and make sure it is correct):")
 
-
 driver = webdriver.Chrome()
 driver.get('https://web.whatsapp.com/')
 
