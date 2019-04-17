@@ -7,7 +7,7 @@ driver.get('https://web.whatsapp.com/')
 
 input('Press any letter and press Enter after scanning QR Code...')
 #target = " " #Type your target's name here which is same as the contact name stored in your phone.
-target = input("Type your target's name which is same as the contact name stored in your phone:")
+target = input("Type your target's name which is same as the contact name stored in your phone(and make sure it is correct):")
 
 # Replies to messages
 msg_to_hi1 = ("Hey there " + target + "! " + "I am Qube, a personal assistant. I am currently under development and can help you with the following commands:")
