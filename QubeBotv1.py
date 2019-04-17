@@ -21,7 +21,7 @@ msg_to_hi8 = "2. The commands are not case sensitive :)"
 msg_to_whatismyname = ("It's " + target + ". How come did you forget your name huh?")
 msg_to_bye = "It was nice meeting you! See ya!"
 
-input('Press Enter after scanning QR Code...')
+input('Press any letter and press Enter after scanning QR Code...')
 
 TargetXML = driver.find_element_by_xpath('//span[@title = "{}"]'.format(target))
 TargetXML.click()
