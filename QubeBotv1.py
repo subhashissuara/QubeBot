@@ -52,14 +52,14 @@ def getweather(cityname):
     x = response.json()
     if x["cod"] != "404":
         y = x["main"]
-        current_temperature = y["temp"]
+        current_temperature = y["temp"] - 273.15
         current_pressure = y["pressure"]
         current_humidiy = y["humidity"]
         z = x["weather"]
         weather_description = z[0]["description"]
-        msg_temp = ("Temperature (in kelvin unit) -> " + str(current_temperature))
+        msg_temp = ("Temperature (in celsius unit) -> " + str(current_temperature))
         msg_pressure = ("Atmospheric pressure (in hPa unit) -> " + str(current_pressure))
-        msg_humidiy = ("Humidity (in percentage) = " + str(current_humidiy))
+        msg_humidiy = ("Humidity (in percentage) = " + str(current_humidiy) + "%")
         msg_description = ("Condition: " + str(weather_description).capitalize())
         SendStringMessage(msg_temp)
         SendStringMessage(msg_pressure)
@@ -101,6 +101,8 @@ while True:
     except:
         time.sleep(1)
         pass
+
+
 
 
 
