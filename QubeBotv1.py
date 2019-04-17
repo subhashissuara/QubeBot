@@ -7,7 +7,7 @@ driver.get('https://web.whatsapp.com/')
 
 
 #target = " " #Type your target's name here which is same as the contact name stored in your phone.
-target = input("Type your target's name here which is same as the contact name stored in your phone.")
+target = input("Type your target's name here which is same as the contact name stored in your phone:")
 
 
 # Replies to messages
