@@ -89,7 +89,11 @@ while True:
             SendStringMessage(msg_to_hi8)
 
         elif LastMsgReceivedSplit[0] == ".weather":
-            getweather(LastMsgReceivedSplit[1])
+            if len(LastMsgReceivedSplit) > 2:
+                WholeCityName = [" ".join(LastMsgReceivedSplit[1:len(LastMsgReceivedSplit)])]
+                getweather(WholeCityName[0])
+            else:
+                getweather(LastMsgReceivedSplit[1])
             
 
         elif LastMsgReceived == ".what is my name?" or LastMsgReceived == ".what is my name":
@@ -102,9 +106,4 @@ while True:
         time.sleep(1)
         pass
 
-
-
-
-
-   
 
