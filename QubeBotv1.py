@@ -65,7 +65,7 @@ while True:
             SendButton = driver.find_elements_by_class_name('_35EW6')
             SendButton[0].click()
 
-        elif LastMsgReceived == ".what is my name?":
+        elif LastMsgReceived == ".what is my name?" or LastMsgReceived == ".what is my name":
             MsgBox = driver.find_elements_by_class_name('_1Plpp')
             MsgBox[0].send_keys(msg_to_whatismyname)
             SendButton = driver.find_elements_by_class_name('_35EW6')
