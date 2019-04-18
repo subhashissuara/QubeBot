@@ -10,6 +10,7 @@ To run the bot on your PC you need to have the following installed:
 - Remember the path where python is going to get installed.
 
 Instructions to run:
+- Clone or download (as zip) and extract it.
 - Copy **chromedriver.exe** to Scripts folder present in python install location.
 - Open command prompt, copy, paste(right-click to paste) and press ENTER for the following commands one by one:
   - `pip install selenium`
