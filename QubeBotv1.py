@@ -87,14 +87,14 @@ def getweather(City_Name):
     Response_JSON = Response.json()
     if Response_JSON["cod"] != "404":
         Response_JSON_Main = Response_JSON["main"]
-        Current_Temperature = Response_JSON_Main["temp"] - 273
+        Current_Temperature = round((Response_JSON_Main["temp"] - 273.15),2)
         Current_Pressure = Response_JSON_Main["pressure"]
         Current_Humidiy = Response_JSON_Main["humidity"]
         Weather = Response_JSON["weather"]
         Weather_Description = Weather[0]["description"]
-        Msg_Temp = ("Temperature (in celsius unit) -> " + str(Current_Temperature))
-        Msg_Pressure = ("Atmospheric pressure (in hPa unit) -> " + str(Current_Pressure))
-        Msg_Humidiy = ("Humidity (in percentage) = " + str(Current_Humidiy) + "%")
+        Msg_Temp = ("Temperature -> " + str(Current_Temperature) +"°C")
+        Msg_Pressure = ("Atmospheric pressure -> " + str(Current_Pressure) + " mbar")
+        Msg_Humidiy = ("Humidity -> " + str(Current_Humidiy) + "%")
         Msg_Description = ("Condition: " + str(Weather_Description).capitalize())
         SendStringMessage(Msg_Temp)
         SendStringMessage(Msg_Pressure)
@@ -122,7 +122,9 @@ def news():
         SendStringMessage("*Link To Full Story: {}*".format(Story.link.text))
         SendStringMessage("_Published on: {}_".format(Story.pubDate.text))
         #SendStringMessage("-"*58)
-      
+
+        
+
 # Continues searching for keywords in messages received till script is exited by the user       
 while True: 
     try:
@@ -171,6 +173,8 @@ while True:
     except:
         time.sleep(0.5)
         pass
+
+
 
 
 
