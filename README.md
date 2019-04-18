@@ -12,7 +12,7 @@ To run the bot on your PC you need to have the following installed:
 Instructions to run:
 - Clone or download (as zip) and extract it.
 - Copy **chromedriver.exe** to Scripts folder present in python install location.
-- Open command prompt, copy, paste(right-click to paste) and press ENTER for the following commands one by one:
+- Open command prompt(as administrator), copy, paste(right-click to paste) and press ENTER for the following commands one by one:
   - `pip install selenium`
   - `pip install beautifulsoup4`
 - The script is ready to run now! Enjoy!   
