@@ -26,15 +26,12 @@ if len(Target_Split) > 1:
 else:
     Target_Firstname = Target
 
-print('Press Enter after scanning the QR Code...')
-time.sleep(2)
-
 # Defines chrome as the webdriver and opens the whatsapp web link
 Driver = webdriver.Chrome()
 Driver.get('https://web.whatsapp.com/')
 
 # Waits for any input to proceed further
-input()
+input('Press Enter after scanning the QR Code...')
 
 try:
     # Searches for target in recent chats
