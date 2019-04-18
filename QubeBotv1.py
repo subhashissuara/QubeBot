@@ -1,6 +1,10 @@
+# ------------------------
+# QubeBot, a whatsapp bot.
+# Writtern by QuantumBrute
+# ------------------------
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from datetime import datetime
 from selenium.common.exceptions import NoSuchElementException
 import time
 import requests
@@ -10,144 +14,171 @@ import bs4
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 
-#target = " " #Type your target's name here which is same as the contact name stored in your phone.
-target = input("Type your target's name which is same as the contact name stored in your phone(and make sure it is correct):")
+# To get the target
+Target = input("Type your Target's name which should be same as the contact name stored in your phone:")
+Target.capitalize()
 
-target_split = target.split()
+Target_Split = Target.split()
 
-if len(target_split) > 1:
-    target_firstname = target_split[0]
+# To make the bot respond to author by first name only
+if len(Target_Split) > 1:
+    Target_Firstname = Target_Split[0]
 else:
-    target_firstname = target
+    Target_Firstname = Target
 
+print('Press Enter after scanning the QR Code...')
+time.sleep(2)
 
-driver = webdriver.Chrome()
-driver.get('https://web.whatsapp.com/')
+# Defines chrome as the webdriver and opens the whatsapp web link
+Driver = webdriver.Chrome()
+Driver.get('https://web.whatsapp.com/')
 
-input('Press Enter after scanning the QR Code...')
+# Waits for any input to proceed further
+input()
 
 try:
-    TargetXML = driver.find_element_by_xpath('//span[@title = "{}"]'.format(target))
-    TargetXML.click()
+    # Searches for target in recent chats
+    Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target))
+    Target_XML.click()  
 except:
-    print("Target not found in recent chat! Quitting bot in 5... 4... 3... 2... 1...")
-    time.sleep(5)
-    sys.exit()
+    try:
+        # Searches for target in contact list
+        Search_Bar = Driver.find_element_by_class_name('_2MSJr')
+        Search_Bar.click()
+        time.sleep(1)
+        Search_Type = Search_Bar.find_element_by_xpath('//input[@class = "jN-F5 copyable-text selectable-text"]')
+        Search_Type.send_keys(Target)
+        time.sleep(2)
+        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target))
+        Target_XML.click()
+    except: 
+        # If target is not found in any of the above cases   
+        print("Target not found in contacts! Quitting bot in 5... 4... 3... 2... 1...")
+        time.sleep(5)
+        sys.exit()
 
 
 
-# Replies to messages
-msg_to_hi1 = ("Greetings " + target_firstname + "! " + "I am Qube, a personal assistant. I am currently under development and can help you with the following commands:")
-msg_to_hi2 = "-> .hi or .hello or .hey"   
-msg_to_hi3 = "-> .what is my name?"
-msg_to_hi4 = "-> .weather *city name*"
-msg_to_hi5 = "-> .news"
-msg_to_hi6 = "-> .bye or .see ya"
-msg_to_hi7 = "Things to note:"    
-msg_to_hi8 = "1. Make sure there is no gap between . and your command otherwise, you will be waiting for me and I won't know!"
-msg_to_hi9 = "2. The commands are not case sensitive :)"
-msg_to_whatismyname1 = "Hmmm..."
-msg_to_whatismyname2 = ("It's " + target_firstname + "! How come you forgot your name huh?")
-msg_to_bye1 = ("It was nice meeting you " + target_firstname + "!")
-msg_to_bye2 = "See ya later!"
+# Replies for commands
+Msg_For_Hi1 = ("Greetings " + Target_Firstname + "! " + "I am Qube, a personal assistant. I am currently under development and can help you with the following commands:")
+Msg_For_Hi2 = "-> .hi or .hello or .hey"   
+Msg_For_Hi3 = "-> .what is my name?"
+Msg_For_Hi4 = "-> .weather *city name*"
+Msg_For_Hi5 = "-> .news or .top stories"
+Msg_For_Hi6 = "-> .bye or .see ya"
+Msg_For_Hi7 = "Things to note:"    
+Msg_For_Hi8 = "1. Make sure there is no gap between . and your command otherwise, you will be waiting for me and I won't know!"
+Msg_For_Hi9 = "2. The commands are not case sensitive :)"
+Msg_For_What_Is_My_Name1 = "Hmmm..."
+Msg_For_What_Is_My_Name2 = ("It's " + Target_Firstname + "! How come you forgot your name huh?")
+Msg_For_Bye1 = ("It was nice meeting you " + Target_Firstname + "!")
+Msg_For_Bye2 = "See ya later!"
 
-def SendStringMessage(msg):
-    MsgBox = driver.find_elements_by_class_name('_1Plpp')
-    MsgBox[0].send_keys(msg)
-    SendButton = driver.find_elements_by_class_name('_35EW6')
-    SendButton[0].click()
+# Function to send messages in selected chat
+def SendStringMessage(Msg):
+    Msg_Box = Driver.find_elements_by_class_name('_1Plpp')
+    Msg_Box[0].send_keys(Msg)
+    Send_Button = Driver.find_elements_by_class_name('_35EW6')
+    Send_Button[0].click()
 
-def getweather(cityname):
-    api_key = '2580d00cea5b8a68bdb7c07a72f1ffbb'
-    base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + cityname
-    response = requests.get(complete_url)
-    x = response.json()
-    if x["cod"] != "404":
-        y = x["main"]
-        current_temperature = y["temp"] - 273
-        current_pressure = y["pressure"]
-        current_humidiy = y["humidity"]
-        z = x["weather"]
-        weather_description = z[0]["description"]
-        msg_temp = ("Temperature (in celsius unit) -> " + str(current_temperature))
-        msg_pressure = ("Atmospheric pressure (in hPa unit) -> " + str(current_pressure))
-        msg_humidiy = ("Humidity (in percentage) = " + str(current_humidiy) + "%")
-        msg_description = ("Condition: " + str(weather_description).capitalize())
-        SendStringMessage(msg_temp)
-        SendStringMessage(msg_pressure)
-        SendStringMessage(msg_humidiy)
-        SendStringMessage(msg_description)
+# Function to get and reply weather of city requested
+def getweather(City_Name):
+    Api_key = '2580d00cea5b8a68bdb7c07a72f1ffbb'
+    Base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    Complete_url = Base_url + "appid=" + Api_key + "&q=" + City_Name
+    Response = requests.get(Complete_url)
+    Response_JSON = Response.json()
+    if Response_JSON["cod"] != "404":
+        Response_JSON_Main = Response_JSON["main"]
+        Current_Temperature = Response_JSON_Main["temp"] - 273
+        Current_Pressure = Response_JSON_Main["pressure"]
+        Current_Humidiy = Response_JSON_Main["humidity"]
+        Weather = Response_JSON["weather"]
+        Weather_Description = Weather[0]["description"]
+        Msg_Temp = ("Temperature (in celsius unit) -> " + str(Current_Temperature))
+        Msg_Pressure = ("Atmospheric pressure (in hPa unit) -> " + str(Current_Pressure))
+        Msg_Humidiy = ("Humidity (in percentage) = " + str(Current_Humidiy) + "%")
+        Msg_Description = ("Condition: " + str(Weather_Description).capitalize())
+        SendStringMessage(Msg_Temp)
+        SendStringMessage(Msg_Pressure)
+        SendStringMessage(Msg_Humidiy)
+        SendStringMessage(Msg_Description)
 
     else:
         SendStringMessage("Oops...")
         SendStringMessage("City Not Found")
 
+# Function to scrape and reply the top stories of the day
 def news():
     News_URL = "https://news.google.com/news/rss"
-    NewURLOpen = urlopen(News_URL)
-    Xml_Page = NewURLOpen.read()
-    NewURLOpen.close()
+    New_URL_Open = urlopen(News_URL)
+    Xml_Page = New_URL_Open.read()
+    New_URL_Open.close()
     Soup = soup(Xml_Page,"xml")
     Top_Stories = Soup.findAll("item")
     SendStringMessage("*Today's Top Stories...*")
     SendStringMessage("-"*31)
-    for story in Top_Stories:
-        SendStringMessage(story.title.text)
+    for Story in Top_Stories:
+        SendStringMessage("*{}*".format(Story.title.text))
         #SendStringMessage("*Short Description*:")
-        #SendStringMessage(story.description.text)
-        SendStringMessage("*Link To Full Story:*")
-        SendStringMessage(story.link.text)
-        SendStringMessage(story.pubDate.text)
+        #SendStringMessage(Story.description.text)
+        SendStringMessage("*Link To Full Story: {}*".format(Story.link.text))
+        SendStringMessage("Published on: {}".format(Story.pubDate.text))
         #SendStringMessage("-"*58)
 
         
-        
-while True:
+
+# Continues searching for keywords in messages received till script is exited by the user       
+while True: 
     try:
-        MsgDiv = driver.find_elements_by_class_name('Tkt2p')
-        MsgSpan = MsgDiv[0].find_elements_by_xpath('//span[@class = "selectable-text invisible-space copyable-text"]')
-        SizeofMsgSpan = len(MsgSpan)
-        LastMsgsReceivedList = []
-        LastMsg = (MsgSpan[SizeofMsgSpan - 1].text).lower()
-        SecondLastMsg = (MsgSpan[SizeofMsgSpan - 2].text).lower()
-        LastMsgsReceivedList.append(SecondLastMsg)
-        LastMsgsReceivedList.append(LastMsg)
+        # Gets the last 2 messages in the selected chat
+        Msg_Div = Driver.find_elements_by_class_name('Tkt2p')
+        Msg_Span = Msg_Div[0].find_elements_by_xpath('//span[@class = "selectable-text invisible-space copyable-text"]')
+        Size_of_Msg_Span = len(Msg_Span)
+        Last_Msgs_Received_List = []
+        Last_Msg = (Msg_Span[Size_of_Msg_Span - 1].text).lower()
+        Second_Last_Msg = (Msg_Span[Size_of_Msg_Span - 2].text).lower()
+        Last_Msgs_Received_List.append(Second_Last_Msg)
+        Last_Msgs_Received_List.append(Last_Msg)
 
-        for i in range(len(LastMsgsReceivedList)):
-            LastMsgReceivedSplit = LastMsgsReceivedList[i].split()
-            if LastMsgReceivedSplit[0] == ".hi" or LastMsgReceivedSplit[0] == ".hello" or LastMsgReceivedSplit[0] == ".hey":
-                SendStringMessage(msg_to_hi1)
-                SendStringMessage(msg_to_hi2)
-                SendStringMessage(msg_to_hi3)
-                SendStringMessage(msg_to_hi4)
-                SendStringMessage(msg_to_hi5)
-                SendStringMessage(msg_to_hi6)
-                SendStringMessage(msg_to_hi7)
-                SendStringMessage(msg_to_hi8)
-                SendStringMessage(msg_to_hi9)
+        # Loops through the last 2 messages in selected chat and searches for keywords
+        for i in range(len(Last_Msgs_Received_List)):
+            Last_Msg_Received_Split = Last_Msgs_Received_List[i].split()
+            if Last_Msg_Received_Split[0] == ".hi" or Last_Msg_Received_Split[0] == ".hello" or Last_Msg_Received_Split[0] == ".hey":
+                SendStringMessage(Msg_For_Hi1)
+                SendStringMessage(Msg_For_Hi2)
+                SendStringMessage(Msg_For_Hi3)
+                SendStringMessage(Msg_For_Hi4)
+                SendStringMessage(Msg_For_Hi5)
+                SendStringMessage(Msg_For_Hi6)
+                SendStringMessage(Msg_For_Hi7)
+                SendStringMessage(Msg_For_Hi8)
+                SendStringMessage(Msg_For_Hi9)
 
-            elif LastMsgReceivedSplit[0] == ".weather":
-                if len(LastMsgReceivedSplit) > 2:
-                    WholeCityName = [" ".join(LastMsgReceivedSplit[1:len(LastMsgReceivedSplit)])]
-                    getweather(WholeCityName[0])
+            elif Last_Msg_Received_Split[0] == ".weather":
+                if len(Last_Msg_Received_Split) > 2:
+                    Whole_City_Name = [" ".join(Last_Msg_Received_Split[1:len(Last_Msg_Received_Split)])]
+                    getweather(Whole_City_Name[0])
                 else:
-                    getweather(LastMsgReceivedSplit[1])
+                    getweather(Last_Msg_Received_Split[1])
             
-            elif LastMsgReceivedSplit[0] == ".news":
+            elif Last_Msg_Received_Split[0] == ".news" or Last_Msgs_Received_List[i] == ".top stories":
                 news()
 
-            elif LastMsgsReceivedList[i] == ".what is my name?" or LastMsgsReceivedList[i] == ".what is my name":
-                SendStringMessage(msg_to_whatismyname1)
-                SendStringMessage(msg_to_whatismyname2)
+            elif Last_Msgs_Received_List[i] == ".what is my name?" or Last_Msgs_Received_List[i] == ".what is my name":
+                SendStringMessage(Msg_For_What_Is_My_Name1)
+                SendStringMessage(Msg_For_What_Is_My_Name2)
             
-            elif LastMsgsReceivedList[i] == ".bye" or LastMsgsReceivedList[i] == ".see ya":
-                SendStringMessage(msg_to_bye1)
-                SendStringMessage(msg_to_bye2)
+            elif Last_Msgs_Received_List[i] == ".bye" or Last_Msgs_Received_List[i] == ".see ya":
+                SendStringMessage(Msg_For_Bye1)
+                SendStringMessage(Msg_For_Bye2)
         time.sleep(0.5)
     except:
         time.sleep(0.5)
         pass
+
+
+
 
 
 
