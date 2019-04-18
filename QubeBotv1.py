@@ -120,7 +120,7 @@ def news():
         #SendStringMessage("*Short Description*:")
         #SendStringMessage(Story.description.text)
         SendStringMessage("*Link To Full Story: {}*".format(Story.link.text))
-        SendStringMessage("Published on: {}".format(Story.pubDate.text))
+        SendStringMessage("_Published on: {}_".format(Story.pubDate.text))
         #SendStringMessage("-"*58)
 
         
