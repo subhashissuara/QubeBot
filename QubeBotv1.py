@@ -122,9 +122,7 @@ def news():
         SendStringMessage("*Link To Full Story: {}*".format(Story.link.text))
         SendStringMessage("_Published on: {}_".format(Story.pubDate.text))
         #SendStringMessage("-"*58)
-
-        
-
+      
 # Continues searching for keywords in messages received till script is exited by the user       
 while True: 
     try:
