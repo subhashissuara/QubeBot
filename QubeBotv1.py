@@ -16,15 +16,15 @@ from urllib.request import urlopen
 
 # To get the target
 Target = input("Type your Target's name which should be same as the contact name stored in your phone:")
-Target.capitalize()
+Target_Capitalize = Target.title()
 
-Target_Split = Target.split()
+Target_Split = Target_Capitalize.split()
 
 # To make the bot respond to author by first name only
 if len(Target_Split) > 1:
     Target_Firstname = Target_Split[0]
 else:
-    Target_Firstname = Target
+    Target_Firstname = Target_Capitalize
 
 # Defines chrome as the webdriver and opens the whatsapp web link
 Driver = webdriver.Chrome()
@@ -35,7 +35,7 @@ input('Press Enter after scanning the QR Code...')
 
 try:
     # Searches for target in recent chats
-    Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target))
+    Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Capitalize))
     Target_XML.click()  
 except:
     try:
@@ -44,9 +44,9 @@ except:
         Search_Bar.click()
         time.sleep(1)
         Search_Type = Search_Bar.find_element_by_xpath('//input[@class = "jN-F5 copyable-text selectable-text"]')
-        Search_Type.send_keys(Target)
+        Search_Type.send_keys(Target_Capitalize)
         time.sleep(2)
-        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target))
+        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Capitalize))
         Target_XML.click()
     except: 
         # If target is not found in any of the above cases   
@@ -59,13 +59,14 @@ except:
 # Replies for commands
 Msg_For_Hi1 = ("Greetings " + Target_Firstname + "! " + "I am Qube, a personal assistant. I am currently under development and can help you with the following commands:")
 Msg_For_Hi2 = "-> .hi or .hello or .hey"   
-Msg_For_Hi3 = "-> .what is my name?"
+Msg_For_Hi3 = "-> .search *keywords to search on internet*"
 Msg_For_Hi4 = "-> .weather *city name*"
 Msg_For_Hi5 = "-> .news or .top stories"
-Msg_For_Hi6 = "-> .bye or .see ya"
-Msg_For_Hi7 = "Things to note:"    
-Msg_For_Hi8 = "1. Make sure there is no gap between . and your command otherwise, you will be waiting for me and I won't know!"
-Msg_For_Hi9 = "2. The commands are not case sensitive :)"
+Msg_For_Hi6 = "-> .what is my name?"
+Msg_For_Hi7 = "-> .bye or .see ya"
+Msg_For_Hi8 = "Things to note:"    
+Msg_For_Hi9 = "1. Make sure there is no gap between . and your command otherwise, you will be waiting for me and I won't know!"
+Msg_For_Hi10 = "2. The commands are not case sensitive :)"
 Msg_For_What_Is_My_Name1 = "Hmmm..."
 Msg_For_What_Is_My_Name2 = ("It's " + Target_Firstname + "! How come you forgot your name huh?")
 Msg_For_Bye1 = ("It was nice meeting you " + Target_Firstname + "!")
@@ -92,18 +93,18 @@ def getweather(City_Name):
         Current_Humidiy = Response_JSON_Main["humidity"]
         Weather = Response_JSON["weather"]
         Weather_Description = Weather[0]["description"]
-        Msg_Temp = ("Temperature -> " + str(Current_Temperature) +"°C")
-        Msg_Pressure = ("Atmospheric pressure -> " + str(Current_Pressure) + " mbar")
-        Msg_Humidiy = ("Humidity -> " + str(Current_Humidiy) + "%")
-        Msg_Description = ("Condition: " + str(Weather_Description).capitalize())
+        Msg_Temp = ("Temperature -> " + "*" + str(Current_Temperature) +"°C" + "*")
+        Msg_Pressure = ("Atmospheric pressure -> " + "*" + str(Current_Pressure) + " mbar" + "*")
+        Msg_Humidiy = ("Humidity -> " + "*" + str(Current_Humidiy) + "%" + "*")
+        Msg_Description = ("Condition: " + "*" + str(Weather_Description).capitalize() + "*")
         SendStringMessage(Msg_Temp)
         SendStringMessage(Msg_Pressure)
         SendStringMessage(Msg_Humidiy)
         SendStringMessage(Msg_Description)
 
     else:
-        SendStringMessage("Oops...")
-        SendStringMessage("City Not Found")
+        SendStringMessage("_Oopsie..._")
+        SendStringMessage("_City Not Found! Try again!_")
 
 # Function to scrape and reply the top stories of the day
 def news():
@@ -123,6 +124,39 @@ def news():
         SendStringMessage("_Published on: {}_".format(Story.pubDate.text))
         #SendStringMessage("-"*58)
 
+# Function to search keywords and reply by scrappping duckduckgo results
+def search(Search_Words):
+    try:
+        Base_URL = 'https://api.duckduckgo.com/?q='
+        x = '1'
+        Conditions_URL = '&format=json&pretty=' + x +'&no_html=1&skip_disambig=1'
+        Complete_URL = Base_URL + Search_Words + Conditions_URL
+        Response = requests.get(Complete_URL)
+        Response_JSON = Response.json()
+        SendStringMessage('_Searching..._')
+        To_Send = Response_JSON.get("Abstract")
+        if To_Send != "":
+            SendStringMessage("*{}*".format(To_Send))
+        else:
+            SendStringMessage('_Oopsie..._')
+            SendStringMessage('_No results found! Try again!_')
+    except:
+        try:
+            Base_URL = 'https://api.duckduckgo.com/?q='
+            x = '2'
+            Conditions_URL = '&format=json&pretty=' + x +'&no_html=1&skip_disambig=1'
+            Complete_URL = Base_URL + Search_Words + Conditions_URL
+            Response = requests.get(Complete_URL)
+            Response_JSON = Response.json()
+            To_Send = Response_JSON.get("AbstractText")
+            if To_Send != "":
+                SendStringMessage("*{}*".format(To_Send))
+            else:
+                SendStringMessage('_Oopsie..._')
+                SendStringMessage('_No results found! Try again!_')
+        except:
+            SendStringMessage('_Oopsie..._')
+            SendStringMessage('_No results found! Try again!_')
         
 
 # Continues searching for keywords in messages received till script is exited by the user       
@@ -151,6 +185,14 @@ while True:
                 SendStringMessage(Msg_For_Hi7)
                 SendStringMessage(Msg_For_Hi8)
                 SendStringMessage(Msg_For_Hi9)
+                SendStringMessage(Msg_For_Hi10)
+
+            elif Last_Msg_Received_Split[0] == ".search":
+                if len(Last_Msg_Received_Split) > 2:
+                    Whole_Search_Text = [" ".join(Last_Msg_Received_Split[1:len(Last_Msg_Received_Split)])]
+                    search(Whole_Search_Text[0])
+                else:
+                    search(Last_Msg_Received_Split[1])    
 
             elif Last_Msg_Received_Split[0] == ".weather":
                 if len(Last_Msg_Received_Split) > 2:
@@ -173,6 +215,8 @@ while True:
     except:
         time.sleep(0.5)
         pass
+
+
 
 
 
