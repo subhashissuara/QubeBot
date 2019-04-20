@@ -17,6 +17,8 @@ from urllib.request import urlopen
 # To get the target
 Target = input("Type your Target's name which should be same as the contact name stored in your phone:")
 Target_Capitalize = Target.title()
+Target_Upper = Target.upper()
+Target_Lower = Target.lower()
 
 Target_Split = Target_Capitalize.split()
 
@@ -39,23 +41,42 @@ try:
     Target_XML.click()  
 except:
     try:
-        # Searches for target in contact list
-        Search_Bar = Driver.find_element_by_class_name('_2MSJr')
-        Search_Bar.click()
-        time.sleep(1)
-        Search_Type = Search_Bar.find_element_by_xpath('//input[@class = "jN-F5 copyable-text selectable-text"]')
-        Search_Type.send_keys(Target_Capitalize)
-        time.sleep(2)
-        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Capitalize))
+        # Searches for target in recent chats
+        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Upper))
         Target_XML.click()
-    except: 
-        # If target is not found in any of the above cases   
-        print("Target not found in contacts! Quitting bot in 5... 4... 3... 2... 1...")
-        time.sleep(5)
-        sys.exit()
+    except:
+        try:
+            # Searches for target in recent chats
+            Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Lower))
+            Target_XML.click()
+        except:
+            try:
+                # Searches for target in contact list
+                Search_Bar = Driver.find_element_by_class_name('_2MSJr')
+                Search_Bar.click()
+                time.sleep(1)
+                Search_Type = Search_Bar.find_element_by_xpath('//input[@class = "jN-F5 copyable-text selectable-text"]')
+                Search_Type.send_keys(Target_Capitalize)
+                time.sleep(2)
+                Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Capitalize))
+                Target_XML.click()
+            except:
+                try:
+                    Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Upper))
+                    Target_XML.click()
+                except:
+                    try:
+                        Target_XML = Driver.find_element_by_xpath('//span[@title = "{}"]'.format(Target_Lower))
+                        Target_XML.click()
+                    except: 
+                        # If target is not found in any of the above cases   
+                        print("Target not found in contacts! Quitting bot in 5... 4... 3... 2... 1...")
+                        time.sleep(5)
+                        sys.exit()
 
 
 
+           
 # Replies for commands
 Msg_For_Hi1 = ("Greetings " + Target_Firstname + "! " + "I am Qube, a personal assistant. I am currently under development and can help you with the following commands:")
 Msg_For_Hi2 = "-> .hi or .hello or .hey"   
@@ -215,6 +236,8 @@ while True:
     except:
         time.sleep(0.5)
         pass
+
+
 
 
 
