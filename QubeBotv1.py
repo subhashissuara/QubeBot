@@ -1,6 +1,6 @@
 # ------------------------
 # QubeBot, a whatsapp bot.
-# Writtern by QuantumBrute
+# Writtern by Subhashis Suara / QuantumBrute
 # ------------------------
 
 from selenium import webdriver
