@@ -3,6 +3,7 @@ QubeBot is a personal assistant on whatsapp and is made using selenium and pytho
 
 To run the bot on your PC you need to have the following installed:
 - Google Chrome - [Download](https://www.google.com/chrome/)
+- Chrome Driver (Stable Release) - [Download](http://chromedriver.chromium.org/)
 - Python 3.x - [Download](https://www.python.org/downloads/)
 
 **Note**: 
@@ -11,7 +12,7 @@ To run the bot on your PC you need to have the following installed:
 
 Instructions to run:
 - Clone or download (as zip) and extract it.
-- Copy **chromedriver.exe** to Scripts folder present in python install location.
+- Extract chromedriver zip after downloading and copy **chromedriver.exe** to Scripts folder present in python install location.
 - Open command prompt(as administrator), copy, paste(right-click to paste) and press ENTER for the following commands one by one:
   - `pip install selenium`
   - `pip install beautifulsoup4`
