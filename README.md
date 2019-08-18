@@ -19,4 +19,4 @@ Instructions to run:
 - The script is ready to run now! Enjoy!   
 
 **Note**:
-If the script gives error regarding class not found just change the class value in script fpr the WhatsApp web page.
+If the script gives error regarding class or xpath not found just change the class/xpath value in script from WhatsApp web page.
