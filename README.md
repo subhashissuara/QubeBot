@@ -17,3 +17,6 @@ Instructions to run:
   - `pip install selenium`
   - `pip install beautifulsoup4`
 - The script is ready to run now! Enjoy!   
+
+**Note**:
+If the script gives error regarding class not found just change the class value in script fpr the WhatsApp web page.
