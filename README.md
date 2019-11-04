@@ -1,6 +1,8 @@
 # QubeBot
 QubeBot is a personal assistant on whatsapp and is made using selenium and python. 
 
+**Note**: As WhatsApp web updates, their html attributes are changed and hence this script might not work. To fix that you can update the atrributes in the script itself.
+
 To run the bot on your PC you need to have the following installed:
 - Google Chrome - [Download](https://www.google.com/chrome/)
 - Chrome Driver (Stable Release) - [Download](http://chromedriver.chromium.org/)
