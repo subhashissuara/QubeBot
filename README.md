@@ -16,8 +16,8 @@ Instructions to run:
 - Clone or download (as zip) and extract it.
 - Extract chromedriver zip after downloading and copy **chromedriver.exe** to Scripts folder present in python install location.
 - Open command prompt(as administrator), copy, paste(right-click to paste) and press ENTER for the following commands one by one:
-  - `pip install selenium`
-  - `pip install beautifulsoup4`
+  - `pip3 install selenium`
+  - `pip3 install beautifulsoup4`
 - The script is ready to run now! Enjoy!   
 
 **Note**:
