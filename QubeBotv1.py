@@ -102,7 +102,7 @@ def SendStringMessage(Msg):
 
 # Function to get and reply weather of city requested
 def getweather(City_Name):
-    Api_key = '2580d00cea5b8a68bdb7c07a72f1ffbb'
+    Api_key = '' # Add your own API Key
     Base_url = "http://api.openweathermap.org/data/2.5/weather?"
     Complete_url = Base_url + "appid=" + Api_key + "&q=" + City_Name
     Response = requests.get(Complete_url)
